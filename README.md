@@ -8,8 +8,8 @@ SOL AI Loyalty connects SME merchants with SOL app users through hyper-personali
 
 ### Three Modules
 
-| Module | Description | Port |
-|---|---|---|
+| Module | Description 
+|---|---|
 | `sol-app` | Simulated SOL PWA — AI-ranked offer feed, geo-trigger, Dynamic QR checkout 
 | `merchant-portal` | Merchant campaign builder and ROI dashboard  
 | `pos-scanner` | Merchant QR scan and one-step payment settlement  
