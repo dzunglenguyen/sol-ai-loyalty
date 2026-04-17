@@ -10,10 +10,10 @@ SOL AI Loyalty connects SME merchants with SOL app users through hyper-personali
 
 | Module | Description | Port |
 |---|---|---|
-| `sol-app` | Simulated SOL PWA — AI-ranked offer feed, geo-trigger, Dynamic QR checkout | 3001 |
-| `merchant-portal` | Merchant campaign builder and ROI dashboard _(planned)_ | 3002 |
-| `pos-scanner` | Merchant QR scan and one-step payment settlement _(planned)_ | 3003 |
-| `backend` | Node.js/Express API server — campaigns, offers, QR, geo | 4001 |
+| `sol-app` | Simulated SOL PWA — AI-ranked offer feed, geo-trigger, Dynamic QR checkout 
+| `merchant-portal` | Merchant campaign builder and ROI dashboard  
+| `pos-scanner` | Merchant QR scan and one-step payment settlement  
+| `backend` | Node.js/Express API server — campaigns, offers, QR, geo 
 
 ---
 
@@ -51,8 +51,7 @@ sol-ai-loyalty-poc/
     │   ├── paiEasClient.js       # PAI-EAS propensity scoring
     │   ├── dashVectorClient.js   # DashVector user embeddings
     │   └── qrService.js          # HMAC-SHA256 Dynamic QR
-    └── db/
-        └── seed.js               # PolarDB seed data
+
 ```
 
 ---
