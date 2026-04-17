@@ -1,0 +1,12 @@
+node_modules/
+.next/
+.env
+.env.local
+*.log
+dist/
+build/
+
+# Deploy secrets
+deploy/env/*.env
+deploy/*.pem
+*.pem

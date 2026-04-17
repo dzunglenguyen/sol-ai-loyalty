@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sol-blue: #0046BE;
+  --sol-navy: #00397F;
+  --sol-orange: #FF6B00;
+  --sol-gold: #CF9C51;
+  --sol-green: #00B14F;
+  --sol-surface: #F5F7FA;
+  --sol-text: #1A1A1A;
+  --sol-secondary: #666666;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Tahoma, Inter, sans-serif;
+  background-color: #F5F7FA;
+  color: #1A1A1A;
+  margin: 0;
+  padding: 0;
+}

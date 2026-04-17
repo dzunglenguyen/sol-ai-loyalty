@@ -1,0 +1,25 @@
+{
+  "name": "sol-ai-loyalty-backend",
+  "version": "0.1.0",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "jest --passWithNoTests",
+    "test:run": "jest --passWithNoTests --forceExit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.103.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.1",
+    "express": "^4.19.2",
+    "qrcode": "^1.5.4",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "fast-check": "^3.19.0",
+    "jest": "^29",
+    "supertest": "^7.0.0"
+  }
+}

@@ -1,0 +1,99 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index 26ba6c8285496c09ce5411645addaeda560fe8d5..dc284b531e12bf2895c143f28ab67db936df12b4 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs	
+@@ -2249,9 +2249,24 @@ function CopilotChat({ instructions, suggestions = "auto", onSubmitMessage, make
+ 		}
+ 	}, [isLoading, triggerObservabilityHook]);
+ 	const handleSendMessage = (text) => {
++		const images = selectedImages;
+ 		setSelectedImages([]);
+ 		if (fileInputRef.current) fileInputRef.current.value = "";
+ 		triggerObservabilityHook("onMessageSent", text);
++		if (images.length > 0) {
++			const image = images[0];
++			const subtype = image.contentType.split("/")[1]?.split("+")[0]?.toLowerCase() ?? "png";
++			const format = subtype === "jpg" ? "jpeg" : subtype;
++			return sendMessage({
++				id: (0, _copilotkit_shared.randomUUID)(),
++				content: text,
++				role: "user",
++				image: {
++					format,
++					bytes: image.bytes
++				}
++			});
++		}
+ 		return sendMessage({
+ 			id: (0, _copilotkit_shared.randomUUID)(),
+ 			content: text,
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 0746d6b1315150c9a7cec0b88282453688ca1fe6..b19edebf3fc1fd803e6d6e3d35c44949db070713 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs	
+@@ -2217,9 +2217,24 @@ function CopilotChat({ instructions, suggestions = "auto", onSubmitMessage, make
+ 		}
+ 	}, [isLoading, triggerObservabilityHook]);
+ 	const handleSendMessage = (text) => {
++		const images = selectedImages;
+ 		setSelectedImages([]);
+ 		if (fileInputRef.current) fileInputRef.current.value = "";
+ 		triggerObservabilityHook("onMessageSent", text);
++		if (images.length > 0) {
++			const image = images[0];
++			const subtype = image.contentType.split("/")[1]?.split("+")[0]?.toLowerCase() ?? "png";
++			const format = subtype === "jpg" ? "jpeg" : subtype;
++			return sendMessage({
++				id: randomUUID(),
++				content: text,
++				role: "user",
++				image: {
++					format,
++					bytes: image.bytes
++				}
++			});
++		}
+ 		return sendMessage({
+ 			id: randomUUID(),
+ 			content: text,
+diff --git a/src/components/chat/Chat.tsx b/src/components/chat/Chat.tsx
+index b36f3d89964dd9033f11aa9dbdb646a16f5a97dd..27fc9400455e3d3d563e9995eba12b5ccd9b9886 100644
+--- a/src/components/chat/Chat.tsx
++++ b/src/components/chat/Chat.tsx	
+@@ -598,7 +598,7 @@ export function CopilotChat({
+     }
+   }, [isLoading, triggerObservabilityHook]);
+ 
+-  // Wrapper for sendMessage to clear selected images
++  // Wrapper for sendMessage: attach first queued image (paste / upload) to the user message.
+   const handleSendMessage = (text: string) => {
+     const images = selectedImages;
+     setSelectedImages([]);
+@@ -606,10 +606,25 @@ export function CopilotChat({
+       fileInputRef.current.value = "";
+     }
+ 
+-    // Trigger message sent event
+     triggerObservabilityHook("onMessageSent", text);
+ 
+-    // TODO: send images?
++    if (images.length > 0) {
++      const image = images[0];
++      // ImageUpload: "image/png" → AG-UI ImageData format: "png" (strip "+xml" etc., map jpg → jpeg)
++      const subtype =
++        image.contentType.split("/")[1]?.split("+")[0]?.toLowerCase() ?? "png";
++      const format = subtype === "jpg" ? "jpeg" : subtype;
++      return sendMessage({
++        id: randomUUID(),
++        content: text,
++        role: "user",
++        image: {
++          format,
++          bytes: image.bytes,
++        },
++      });
++    }
++
+     return sendMessage({
+       id: randomUUID(),
+       content: text,

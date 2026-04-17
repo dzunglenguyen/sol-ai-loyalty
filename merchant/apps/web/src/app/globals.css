@@ -1,0 +1,358 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Geist", "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "SF Mono", "JetBrains Mono", monospace;
+
+  /** Main column width (960px @ 16px root). Sync intent with `lib/brand.ts` BRAND_HEX for fixed-pixel APIs. */
+  --app-content-max: 60rem;
+
+  /* Navy: keep hex in sync with `src/lib/brand.ts` BRAND_HEX.shinhanNavy (QR / server HTML). */
+  --color-shinhan-navy: #00397f;
+  --color-shinhan-navy-light: #0a4da3;
+  --color-shinhan-navy-dark: #002a5e;
+  --color-shinhan-gold: #cf9c51;
+  --color-shinhan-gold-light: #e0b876;
+  --color-shinhan-gold-muted: #f5eacd;
+  --color-shinhan-blue: #337ab7;
+  --color-shinhan-blue-light: #e8f1fa;
+  --color-shinhan-charcoal: #252525;
+  --color-shinhan-gray: #cacaca;
+  --color-shinhan-gray-light: #f0efed;
+  --color-shinhan-bone: #fafaf8;
+
+  --color-canvas: #f4f3f0;
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f7f6f3;
+  --color-surface-elevated: #ffffff;
+  --color-border-primary: #e5e4e1;
+  --color-border-subtle: rgba(0, 0, 0, 0.04);
+
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #5c5c5c;
+  --color-text-tertiary: #8e8e8e;
+  --color-text-inverse: #ffffff;
+
+  --color-status-success: #1a7a42;
+  --color-status-success-bg: #eef6f0;
+  --color-status-warning: #956400;
+  --color-status-warning-bg: #fbf3db;
+  --color-status-error: #9f2f2d;
+  --color-status-error-bg: #fdebec;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-premium: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.app-content-container {
+  width: 100%;
+  max-width: min(100%, var(--app-content-max));
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 48rem) {
+  .app-content-container {
+    padding-inline: 2rem;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+::selection {
+  background: rgba(0, 57, 127, 0.12);
+  color: var(--color-shinhan-navy);
+}
+
+@keyframes flash-gold {
+  0% {
+    box-shadow: 0 0 0 0 rgba(207, 156, 81, 0);
+    border-color: var(--color-border-primary);
+  }
+  20% {
+    box-shadow: 0 0 0 3px rgba(207, 156, 81, 0.18);
+    border-color: var(--color-shinhan-gold);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(207, 156, 81, 0);
+    border-color: var(--color-border-primary);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.75);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-pulse-dot {
+    animation: none !important;
+  }
+}
+
+.flash-input-gold {
+  animation: flash-gold 800ms var(--ease-out-expo) forwards;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 8px;
+  outline: none;
+  transition:
+    border-color 300ms var(--ease-premium),
+    box-shadow 300ms var(--ease-premium),
+    background-color 200ms var(--ease-premium);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-tertiary);
+  font-weight: 400;
+}
+
+.form-input:focus {
+  border-color: var(--color-shinhan-navy);
+  background: var(--color-surface-primary);
+  box-shadow:
+    0 0 0 3px rgba(0, 57, 127, 0.06),
+    0 1px 2px rgba(0, 57, 127, 0.04);
+}
+
+.form-input:hover:not(:focus) {
+  border-color: var(--color-shinhan-gray);
+  background: var(--color-surface-primary);
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238e8e8e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.estimation-metric {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-border-primary);
+  transition: border-color 300ms var(--ease-premium);
+}
+
+.estimation-metric:hover {
+  border-color: var(--color-shinhan-navy);
+}
+
+/* Streaming cursor */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.smoothStreamingActive .copilotKitMarkdown > div > :last-child::after,
+.smoothStreamingActive p.copilotKitMarkdownElement:last-of-type::after {
+  content: "▋";
+  display: inline;
+  margin-left: 2px;
+  color: var(--copilot-kit-primary-color, var(--color-shinhan-navy));
+  opacity: 0.55;
+  animation: cursor-blink 0.8s steps(1) infinite;
+  font-size: 0.85em;
+}
+
+/*
+ * CopilotKit defaults: z-index 30. App nav uses z-[70] — keep chat above so the sidebar can
+ * span the full viewport height and overlap the header on the right.
+ * Body noise is z-50 (pointer-events: none).
+ */
+.copilotKitSidebar,
+.copilotKitPopup {
+  z-index: 80;
+  /* Match app shell: Geist + SOL Merchant tokens (body uses the same) */
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --copilot-kit-primary-color: var(--color-shinhan-navy);
+  --copilot-kit-contrast-color: var(--color-text-inverse);
+  --copilot-kit-secondary-contrast-color: var(--color-text-primary);
+  --copilot-kit-muted-color: var(--color-text-tertiary);
+  --copilot-kit-separator-color: var(--color-border-primary);
+  --copilot-kit-input-background-color: var(--color-surface-secondary);
+  --copilot-kit-background-color: var(--color-surface-primary);
+}
+
+/* Message + markdown: same scale as form copy (0.875rem / leading-normal) */
+.copilotKitSidebar .copilotKitMessage,
+.copilotKitPopup .copilotKitMessage {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.copilotKitSidebar .copilotKitMessage.copilotKitAssistantMessage,
+.copilotKitPopup .copilotKitMessage.copilotKitAssistantMessage {
+  color: var(--color-text-primary);
+}
+
+.copilotKitSidebar p.copilotKitMarkdownElement,
+.copilotKitPopup p.copilotKitMarkdownElement {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+.copilotKitSidebar li.copilotKitMarkdownElement,
+.copilotKitPopup li.copilotKitMarkdownElement {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+.copilotKitSidebar h1.copilotKitMarkdownElement,
+.copilotKitSidebar h2.copilotKitMarkdownElement,
+.copilotKitSidebar h3.copilotKitMarkdownElement,
+.copilotKitSidebar h4.copilotKitMarkdownElement,
+.copilotKitSidebar h5.copilotKitMarkdownElement,
+.copilotKitSidebar h6.copilotKitMarkdownElement,
+.copilotKitPopup h1.copilotKitMarkdownElement,
+.copilotKitPopup h2.copilotKitMarkdownElement,
+.copilotKitPopup h3.copilotKitMarkdownElement,
+.copilotKitPopup h4.copilotKitMarkdownElement,
+.copilotKitPopup h5.copilotKitMarkdownElement,
+.copilotKitPopup h6.copilotKitMarkdownElement {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.copilotKitSidebar a.copilotKitMarkdownElement,
+.copilotKitPopup a.copilotKitMarkdownElement {
+  color: var(--color-shinhan-navy);
+}
+
+.copilotKitSidebar blockquote.copilotKitMarkdownElement,
+.copilotKitPopup blockquote.copilotKitMarkdownElement {
+  border-left-color: var(--color-border-primary);
+  color: var(--color-text-secondary);
+}
+
+.copilotKitSidebar .copilotKitMarkdown strong,
+.copilotKitPopup .copilotKitMarkdown strong {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.copilotKitSidebar .copilotKitInput > textarea::placeholder,
+.copilotKitPopup .copilotKitInput > textarea::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.copilotKitSidebar .poweredBy,
+.copilotKitPopup .poweredBy {
+  display: none !important;
+}
+
+.copilotKitSidebar .copilotKitCodeBlockToolbar,
+.copilotKitPopup .copilotKitCodeBlockToolbar {
+  font-family: var(--font-mono);
+}
+
+/*
+ * Sidebar panel: full viewport height, flush top (overlays header). Do not use min-height:0 on
+ * .copilotKitWindow — collapses to content height. min-height:0 on inner flex children = scroll.
+ */
+@media (min-width: 640px) {
+  .copilotKitSidebar .copilotKitWindow {
+    top: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    width: 28rem !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    margin-bottom: 0 !important;
+    overflow: hidden;
+  }
+
+  .copilotKitSidebar .copilotKitChat {
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  .copilotKitSidebar .copilotKitMessages {
+    min-height: 0;
+  }
+}
+
+/* Reduce layout thrashing during streaming (avoid strict containment on the scroll root) */
+.copilotKitMessages {
+  contain: style;
+}
+
+.copilotKitMessage.copilotKitAssistantMessage {
+  will-change: contents;
+}
+
+.scroll-container {
+  scroll-behavior: smooth;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: var(--color-border-primary);
+  border-radius: 3px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--color-shinhan-gray);
+}
